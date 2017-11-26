@@ -86,6 +86,8 @@ window.onload = function() {
     var buttons = [ { x: 30, y: 240, width: 150, height: 50, text: "New Game"},
                     { x: 30, y: 300, width: 150, height: 50, text: "Show Moves"},
                     { x: 30, y: 360, width: 150, height: 50, text: "Enable AI Bot"}];
+
+    context.lineWidth = 3;
     
     // Initialize the game
     function init() {
@@ -427,12 +429,29 @@ window.onload = function() {
             
             if (clusters[i].horizontal) {
                 // Draw a horizontal line
-                context.fillStyle = "#00ff00";
-                context.fillRect(coord.tilex + level.tilewidth/2, coord.tiley + level.tileheight/2 - 4, (clusters[i].length - 1) * level.tilewidth, 8);
+                var x = coord.tilex + level.tilewidth/2, y = coord.tiley + level.tileheight/2 - 4;
+                var e = coord.tilex + level.tilewidth/2 + (clusters[i].length - 1) * level.tilewidth;
+                var s = (e - x)/10;
+                context.lineWidth = 3;
+                context.strokeStyle = "rgb("+(100+Math.random()*155)+","+(100+Math.random()*155)+","+(100+Math.random()*155)+")";
+                context.beginPath();
+                context.moveTo(x, y);
+                for (var ii=x+s; ii<e; ii+=s) {
+                    context.lineTo(ii, y+Math.random()*level.tileheight/2-level.tileheight/4);
+                }
+                context.stroke();
             } else {
                 // Draw a vertical line
-                context.fillStyle = "#0000ff";
-                context.fillRect(coord.tilex + level.tilewidth/2 - 4, coord.tiley + level.tileheight/2, 8, (clusters[i].length - 1) * level.tileheight);
+                var y = coord.tiley + level.tileheight/2, x = coord.tilex + level.tilewidth/2 - 4;
+                var e = coord.tiley + level.tileheight/2 + (clusters[i].length - 1) * level.tileheight;
+                var s = (e - y)/10;
+                context.strokeStyle = "rgb("+(100+Math.random()*155)+","+(100+Math.random()*155)+","+(100+Math.random()*155)+")";
+                context.beginPath();
+                context.moveTo(x, y);
+                for (var ii=y+s; ii<e; ii+=s) {
+                    context.lineTo(x+Math.random()*level.tilewidth/2-level.tilewidth/4, ii);
+                }
+                context.stroke();
             }
         }
     }
